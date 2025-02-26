@@ -1,0 +1,84 @@
+<div class="form-container">
+    <h3>Website Feedback Form</h3>
+    <p>Angular Materials Challenge (Gonzales-WD302)</p>
+    <form [formGroup]="formdata" (ngSubmit)="onClickSubmit(formdata.value)">
+        <mat-form-field appearance="fill">
+            <input matInput type="text" placeholder="Enter Username" formControlName="userName">
+            <mat-label>Username</mat-label>
+            <mat-error *ngIf="formdata.controls['userName'].invalid && formdata.controls['userName'].touched">
+                Username is required, must only have alphanumeric characters, and starts with a letter with at least 8 characters.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" placeholder="Enter Email" formControlName="email">
+            <mat-error *ngIf="formdata.controls['email'].invalid && formdata.controls['email'].touched">
+                Email is required and must be a valid email.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Birth Date</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Select a date" formControlName="birthDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="formdata.get('birthDate')?.hasError('required')">
+                Birth date is required.
+            </mat-error>
+        </mat-form-field>
+
+        <div class="radio-group">
+            <label class="radio-label">Is this the first time you have visited the website?</label>
+            <mat-radio-group formControlName="visit" class="gender-ratio-group">
+                <mat-radio-button value="yes">Yes</mat-radio-button>
+                <mat-radio-button value="no">No</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <!-- <section class="example-section" [formGroup]="needed">
+            <label class="radio-label">Did you find what you need?</label>
+            <mat-checkbox class="example-margin" formControlName="yesall">Yes, all of it</mat-checkbox> <br>
+            <mat-checkbox class="example-margin" formControlName="yessome">Yes, some of it</mat-checkbox> <br>
+            <mat-checkbox class="example-margin" formControlName="no">No, none of it</mat-checkbox>
+        </section> -->
+
+        <mat-form-field appearance="fill">
+            <mat-label>What programming languages did you learn?</mat-label>
+            <select matNativeControl required formControlName="language">
+              <option value="Java">Java</option>
+              <option value="Python">Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="PHP">PHP</option>
+            </select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Why did you visit the website?</mat-label>
+            <textarea matInput placeholder="Pls input your reason here..." formControlName="reason" rows="4"></textarea>
+        </mat-form-field>
+
+        <div class="slider-group">
+            <label class="slider-label">Rate the website's user-friendliness {{ formdata.get('rating')?.value }}</label>
+            <mat-slider [min]="minRating" [max]="maxRating" [step]="1" [discrete]="true">
+                <input matSliderThumb formControlName="rating">
+            </mat-slider>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!formdata.valid">
+            Click Here
+        </button>
+    </form>
+
+    <p *ngIf="submitted">
+        You have entered: <br>
+        Username: {{ userName }} <br>
+        Email: {{ email }} <br>
+        Birth Date: {{ birthDate | date:'shortDate' }} <br>
+        First time visit?: {{ visit }} <br>
+        Programming language: {{ language }} <br>
+        Did you find what you needed?: {{ needed.value | json }} <br>
+        Reason for visit: {{ reason }} <br>
+        User-Friendliness Rating: {{ rating }}
+    </p>
+</div>
