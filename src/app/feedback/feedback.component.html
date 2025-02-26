@@ -2,24 +2,31 @@
     <h3>Website Feedback Form</h3>
     <p>Angular Materials Challenge (Gonzales-WD302)</p>
     <form [formGroup]="formdata" (ngSubmit)="onClickSubmit(formdata.value)">
+        
+        <!-- Username -->
         <mat-form-field appearance="fill">
             <input matInput type="text" placeholder="Enter Username" formControlName="userName">
             <mat-label>Username</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
             <mat-error *ngIf="formdata.controls['userName'].invalid && formdata.controls['userName'].touched">
-                Username is required, must only have alphanumeric characters, and starts with a letter with at least 8 characters.
+                Username is required, must only have alphanumeric characters, and start with a letter with at least 8 characters.
             </mat-error>
         </mat-form-field>
 
+        <!-- Email -->
         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
             <input matInput type="email" placeholder="Enter Email" formControlName="email">
             <mat-error *ngIf="formdata.controls['email'].invalid && formdata.controls['email'].touched">
                 Email is required and must be a valid email.
             </mat-error>
         </mat-form-field>
 
+        <!-- Birth Date -->
         <mat-form-field appearance="fill">
             <mat-label>Birth Date</mat-label>
+            <mat-icon matPrefix>calendar_today</mat-icon>
             <input matInput [matDatepicker]="picker" placeholder="Select a date" formControlName="birthDate">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -28,6 +35,7 @@
             </mat-error>
         </mat-form-field>
 
+        <!-- First Time Visit -->
         <div class="radio-group">
             <label class="radio-label">Is this the first time you have visited the website?</label>
             <mat-radio-group formControlName="visit" class="gender-ratio-group">
@@ -36,15 +44,18 @@
             </mat-radio-group>
         </div>
 
-        <!-- <section class="example-section" [formGroup]="needed">
+        <!-- Checkbox Group -->
+        <section class="example-section" formGroupName="neededOptions">
             <label class="radio-label">Did you find what you need?</label>
             <mat-checkbox class="example-margin" formControlName="yesall">Yes, all of it</mat-checkbox> <br>
             <mat-checkbox class="example-margin" formControlName="yessome">Yes, some of it</mat-checkbox> <br>
             <mat-checkbox class="example-margin" formControlName="no">No, none of it</mat-checkbox>
-        </section> -->
+        </section>
 
+        <!-- Programming Language Selection -->
         <mat-form-field appearance="fill">
             <mat-label>What programming languages did you learn?</mat-label>
+            <mat-icon matPrefix>code</mat-icon>
             <select matNativeControl required formControlName="language">
               <option value="Java">Java</option>
               <option value="Python">Python</option>
@@ -53,32 +64,37 @@
             </select>
         </mat-form-field>
 
+        <!-- Reason for Visit -->
         <mat-form-field appearance="fill">
             <mat-label>Why did you visit the website?</mat-label>
-            <textarea matInput placeholder="Pls input your reason here..." formControlName="reason" rows="4"></textarea>
+            <mat-icon matPrefix>chat</mat-icon>
+            <textarea matInput placeholder="Pls input your reason here..." formControlName="reason" rows="1"></textarea>
         </mat-form-field>
 
+        <!-- Slider Rating -->
         <div class="slider-group">
-            <label class="slider-label">Rate the website's user-friendliness {{ formdata.get('rating')?.value }}</label>
+            <label class="slider-label">Rate the website's user-friendliness (from 1 - 5)</label>
             <mat-slider [min]="minRating" [max]="maxRating" [step]="1" [discrete]="true">
                 <input matSliderThumb formControlName="rating">
             </mat-slider>
         </div>
 
+        <!-- Submit Button -->
         <button mat-raised-button color="primary" type="submit" [disabled]="!formdata.valid">
             Click Here
         </button>
     </form>
 
+    <!-- Display Submitted Data -->
     <p *ngIf="submitted">
         You have entered: <br>
-        Username: {{ userName }} <br>
-        Email: {{ email }} <br>
-        Birth Date: {{ birthDate | date:'shortDate' }} <br>
-        First time visit?: {{ visit }} <br>
-        Programming language: {{ language }} <br>
-        Did you find what you needed?: {{ needed.value | json }} <br>
-        Reason for visit: {{ reason }} <br>
-        User-Friendliness Rating: {{ rating }}
+        Username: <strong>{{ userName }}</strong> <br>
+        Email: <strong>{{ email }}</strong> <br>
+        Birth Date: <strong>{{ birthDate | date:'shortDate' }}</strong> <br>
+        First time visit?: <strong>{{ visit }}</strong> <br>
+        Programming language: <strong>{{ language }}</strong> <br>
+        Did you find what you needed?: <strong>{{ needed }}</strong> <br>
+        Reason for visit: <strong>{{ reason }}</strong> <br>
+        User-Friendliness Rating: <strong>{{ rating }}</strong>
     </p>
 </div>

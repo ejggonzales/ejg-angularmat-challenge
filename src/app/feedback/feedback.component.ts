@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder, AbstractControl} from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,7 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-feedback',
@@ -22,19 +22,19 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class FeedbackComponent {
 
-  private readonly _formBuilder = inject(FormBuilder);
-  readonly needed = this._formBuilder.group({
-    yesall: false,
-    yessome: false,
-    no: false
-  })
+  // private readonly _formBuilder = inject(FormBuilder);
+  // readonly needed = this._formBuilder.group({
+  //   yesall: false,
+  //   yessome: false,
+  //   no: false
+  // })
 
   userName: string = '';
   email: string = '';
   birthDate!: Date;
   visit: string = '';
   language: string = '';
-  // needed: string = '';
+  needed: string = '';
   reason: string = '';
   rating: number = 3;
   submitted = false;
@@ -48,10 +48,18 @@ export class FeedbackComponent {
     birthDate: new FormControl(null, [Validators.required]),
     visit: new FormControl('', [Validators.required]),
     language: new FormControl('', [Validators.required]),
-    needed: new FormControl('', [Validators.required]),
+    yesall: new FormControl(false),
+    yessome: new FormControl(false),
+    no: new FormControl(false),
     reason: new FormControl('', [Validators.required]),
-    rating: new FormControl(3, [Validators.required])
-  })
+    rating: new FormControl(3, [Validators.required]),
+
+    neededOptions: new FormGroup({
+      yesall: new FormControl(false),
+      yessome: new FormControl(false),
+      no: new FormControl(false)
+    })
+  });
 
   onClickSubmit(data: {
     userName: string;
@@ -59,7 +67,6 @@ export class FeedbackComponent {
     birthDate: Date;
     visit: string;
     language: string;
-    needed: string;
     reason: string;
     rating: number;
   })
@@ -73,6 +80,14 @@ export class FeedbackComponent {
     this.language = data.language;
     this.reason = data.reason;
     this.rating = data.rating;
+
+    const neededValues = this.formdata.get('neededOptions')?.value;
+    const selectedOptions = [];
+    if (neededValues?.yesall) selectedOptions.push("✔ Yes, all of it");
+    if (neededValues?.yessome) selectedOptions.push("✔ Yes, some of it");
+    if (neededValues?.no) selectedOptions.push("✔ No, none of it");
+
+    this.needed = selectedOptions.length > 0 ? selectedOptions.join(', ') : 'None selected';
 
     if (this.formdata.valid) {
       console.log("Form Submitted!", this.formdata.value);

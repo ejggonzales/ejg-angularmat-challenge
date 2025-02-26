@@ -80,3 +80,7 @@ body {
     margin-right: 12px;
     color: aquamarine;
   }
+
+  mat-error {
+    color: #333;
+  }
